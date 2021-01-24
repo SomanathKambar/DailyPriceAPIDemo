@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">DailyPriceAPIDemo</string>
+    <string name="commodity_name">Commodity Name: %1$s</string>
+    <string name="place">Place</string>
+    <string name="state">State: %1$s</string>
+    <string name="district">District: %1$s</string>
+    <string name="market">Market: %1$s</string>
+    <string name="price">Price</string>
+    <string name="min_price">Min Price: %1$s</string>
+    <string name="max_price">Max Price: %1$s</string>
+    <string name="modal_price">Modal Price: %1$s</string>
+    <string name="arrival_date">Arrival Date: %1$s</string>
+</resources>

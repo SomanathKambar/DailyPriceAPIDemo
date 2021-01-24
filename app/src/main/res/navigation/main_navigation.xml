@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main_navigation"
+    app:startDestination="@id/priceDetailsFragment">
+
+    <fragment
+        android:id="@+id/priceDetailsFragment"
+        android:name="com.somanath.example.dailypriceapidemo.ui.PriceDetailsFragment"
+        android:label="PriceDetailsFragment" />
+</navigation>
