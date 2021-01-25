@@ -1,32 +1,34 @@
 package com.somanath.example.dailypriceapidemo.paging
 
-import androidx.paging.PagingSource
+import androidx.paging.rxjava2.RxPagingSource
 import com.somanath.example.dailypriceapidemo.api.PriceDetailsAPI
+import com.somanath.example.dailypriceapidemo.data.PriceDetailsResponse
 import com.somanath.example.dailypriceapidemo.data.Record
 import com.somanath.example.dailypriceapidemo.util.Utils
-import retrofit2.HttpException
-import java.io.IOException
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 class PriceDetailsPagingSource(private val api: PriceDetailsAPI,private val filter : String) :
-        PagingSource<Int,
+        RxPagingSource<Int,
         Record>(){
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Record> {
+
+    override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, Record>> {
         val position = params.key ?: Utils.OFFSET_START_INDEX
 
-        return try {
-            val response = api.getInitialData(Utils.API_KEY,Utils.QUERY_VALUE_JSON,Utils
-                    .ITEM_LIMIT_PER_REQUEST,position,filter)
-            val records = response.records
+        return api.getInitialData(
+            Utils.API_KEY, Utils.QUERY_VALUE_JSON, Utils
+                .ITEM_LIMIT_PER_REQUEST, position
+        ).subscribeOn(Schedulers.io()).map {
+            toLoadResult(it, position)
+        }.onErrorReturn { LoadResult.Error(it) }
 
-            LoadResult.Page(
-                    data = records,
-                    prevKey = if (position == Utils.OFFSET_START_INDEX) null else position - 1,
-                    nextKey = if (records.isEmpty()) null else position + 1
-            )
-        } catch (exception: IOException) {
-            LoadResult.Error(exception)
-        } catch (exception: HttpException) {
-            LoadResult.Error(exception)
-        }
+    }
+
+    private fun toLoadResult(data: PriceDetailsResponse, position: Int): LoadResult<Int, Record> {
+        return LoadResult.Page(
+            data = data.records,
+            prevKey = if (position == Utils.OFFSET_START_INDEX) null else position - 1,
+            nextKey = if (data.records.isEmpty()) null else position + 1
+        )
     }
 }

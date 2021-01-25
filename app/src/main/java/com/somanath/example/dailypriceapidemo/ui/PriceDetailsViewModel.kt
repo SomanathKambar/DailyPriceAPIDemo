@@ -1,33 +1,23 @@
 package com.somanath.example.dailypriceapidemo.ui
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.somanath.example.dailypriceapidemo.api.Resource
-import com.somanath.example.dailypriceapidemo.data.Record
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.filter
+import androidx.paging.rxjava2.cachedIn
 import com.somanath.example.dailypriceapidemo.util.Utils
 
 class PriceDetailsViewModel @ViewModelInject constructor(
-    private val repository: PriceDetailsRepository) : ViewModel() {
+    private val repository: PriceDetailsRepository
+) : ViewModel() {
     val filteredData = MutableLiveData(INITIAL_FILTER)
 
-    fun getInitialData() = liveData<Resource<PagingData<Record>?>> {
-        try {
-            emit(Resource.success(data = repository.getInitialData(INITIAL_FILTER).cachedIn(viewModelScope)
-                    .value))
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
-        }
+    fun getPriceDetailsItems() = repository.getInitialData(INITIAL_FILTER).map { pagingData ->
+        pagingData.filter { it.state.isNotEmpty() }
+    }.cachedIn(viewModelScope)
 
-    }
-
-    var items = filteredData.switchMap { filter ->
-            repository.getInitialData(filter).cachedIn(viewModelScope)
-    }
-
-    companion object{
+    companion object {
         const val INITIAL_FILTER = Utils.QUERY_VALUE_STATE
     }
 }
