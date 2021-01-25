@@ -22,4 +22,5 @@ class PriceDetailsViewModel @ViewModelInject constructor(
     companion object {
         const val INITIAL_FILTER = Utils.QUERY_VALUE_STATE
     }
+
 }
