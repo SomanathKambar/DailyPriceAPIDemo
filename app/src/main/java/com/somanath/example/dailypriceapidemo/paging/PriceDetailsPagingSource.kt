@@ -17,7 +17,7 @@ class PriceDetailsPagingSource(private val api: PriceDetailsAPI,private val filt
 
         return api.getInitialData(
             Utils.API_KEY, Utils.QUERY_VALUE_JSON, Utils
-                .ITEM_LIMIT_PER_REQUEST, position
+                .ITEM_LIMIT_PER_REQUEST, position/*, filter*/
         ).subscribeOn(Schedulers.io()).map {
             toLoadResult(it, position)
         }.onErrorReturn { LoadResult.Error(it) }

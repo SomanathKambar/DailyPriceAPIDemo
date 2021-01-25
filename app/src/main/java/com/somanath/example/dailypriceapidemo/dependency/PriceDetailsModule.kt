@@ -1,11 +1,15 @@
 package com.somanath.example.dailypriceapidemo.dependency
 
+import android.content.Context
 import com.somanath.example.dailypriceapidemo.api.PriceDetailsAPI
+import com.somanath.example.dailypriceapidemo.database.GetInitialDataRxRemoteMediator
+import com.somanath.example.dailypriceapidemo.database.PriceDetailsDatabase
 import com.somanath.example.dailypriceapidemo.util.Utils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -41,4 +45,14 @@ object PriceDetailsModule {
     @Provides
     @Singleton
     fun providePriceDetailsAPI(retrofit: Retrofit)  = retrofit.create(PriceDetailsAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDataBase(@ApplicationContext context: Context) =  PriceDetailsDatabase.getInstance(context)
+
+    @Provides
+    @Singleton
+    fun provideRemoteMediator(api: PriceDetailsAPI,database: PriceDetailsDatabase): GetInitialDataRxRemoteMediator{
+        return GetInitialDataRxRemoteMediator(api,database)
+    }
 }

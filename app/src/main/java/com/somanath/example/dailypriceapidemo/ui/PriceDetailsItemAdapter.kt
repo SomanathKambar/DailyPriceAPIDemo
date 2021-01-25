@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.somanath.example.dailypriceapidemo.R
 import com.somanath.example.dailypriceapidemo.data.Record
+import com.somanath.example.dailypriceapidemo.data.RecordToDB
 import com.somanath.example.dailypriceapidemo.databinding.CommodityDetailItemViewBinding
 
 class PriceDetailsItemAdapter():
-    PagingDataAdapter<Record,PriceDetailsItemAdapter.DetailItemViewHolder>(ITEM_COMPARATOR) {
+    PagingDataAdapter<RecordToDB,PriceDetailsItemAdapter.DetailItemViewHolder>(ITEM_COMPARATOR) {
 
     companion object {
-        private val ITEM_COMPARATOR = object : DiffUtil.ItemCallback<Record>() {
-            override fun areItemsTheSame(oldItem: Record, newItem: Record) =
+        private val ITEM_COMPARATOR = object : DiffUtil.ItemCallback<RecordToDB>() {
+            override fun areItemsTheSame(oldItem: RecordToDB, newItem: RecordToDB) =
                     oldItem.variety == newItem.variety
 
-            override fun areContentsTheSame(oldItem: Record, newItem: Record) =
+            override fun areContentsTheSame(oldItem: RecordToDB, newItem: RecordToDB) =
                     oldItem == newItem
         }
     }
@@ -28,7 +29,7 @@ class PriceDetailsItemAdapter():
     inner class DetailItemViewHolder(private val binding: CommodityDetailItemViewBinding) :
         RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item:Record){
+        fun bind(item:RecordToDB){
             binding.apply {
                 commodityNameTitle.text = resources.getString(R.string.commodity_name,item.commodity)
                 state.text = resources.getString(R.string.state, item.state)

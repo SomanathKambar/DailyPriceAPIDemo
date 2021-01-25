@@ -3,6 +3,8 @@ package com.somanath.example.dailypriceapidemo.data
 
 import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
+import androidx.room.Entity
+
 
 @Keep
 data class Record(
@@ -26,4 +28,5 @@ data class Record(
     val timestamp: String,
     @SerializedName("variety")
     val variety: String
+
 )

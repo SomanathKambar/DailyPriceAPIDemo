@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.somanath.example.dailypriceapidemo.databinding.PricingDeatilsLoadstateFooterItemBinding
 
 class PricingDetailsLoadStateAdapter(private val retry: () -> Unit) :
-        LoadStateAdapter<PricingDetailsLoadStateAdapter.LoadStateViewHolder>(), Filterable {
+        LoadStateAdapter<PricingDetailsLoadStateAdapter.LoadStateViewHolder>() /*,Filterable*/ {
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
         val binding = PricingDeatilsLoadstateFooterItemBinding.inflate(
@@ -44,8 +44,8 @@ class PricingDetailsLoadStateAdapter(private val retry: () -> Unit) :
         }
     }
 
-    override fun getFilter(): Filter {
-        TODO("Not yet implemented")
-    }
+//    override fun getFilter(): Filter {
+//        TODO("Not yet implemented")
+//    }
 
 }
